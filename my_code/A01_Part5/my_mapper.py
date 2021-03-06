@@ -75,7 +75,25 @@ def process_line(line):
 # FUNCTION my_map
 # ------------------------------------------
 def my_map(my_input_stream, my_output_stream, my_mapper_input_parameters):
-    pass
+    bike_ids = {}
+    bike_trips = {}
+    for line in my_input_stream:
+        parameters = process_line(line)
+        bike_id = parameters[11]
+        travel_duration = parameters[2]
+        if (bike_id in bike_ids):
+            bike_ids[bike_id] += travel_duration
+            bike_trips[bike_id] += 1
+        else:
+            bike_ids[bike_id] = travel_duration
+            bike_trips[bike_id] = 1
+
+    for bike in bike_ids:
+        s = "universal\t(" + str(bike) + ", " + str(bike_ids[bike]) + ", " + str(bike_trips[bike]) + ")\n"
+        my_output_stream.write(s)
+
+
+
 
 # ---------------------------------------------------------------
 #           PYTHON EXECUTION

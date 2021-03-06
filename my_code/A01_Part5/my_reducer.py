@@ -23,11 +23,69 @@
 import sys
 import codecs
 
+def process_line(line):
+    # 1. We create the output variable
+    res = ()
+
+
+
+    # 1.2. We ouptut the bike_id from the line
+    bike_id = None
+
+    # 1.3. We ouptut the total_time from the line
+    total_time = None
+
+    # 1.4. We output the total_trips from the line
+    total_trips = None
+
+    # 2. We assign the variables
+    content = line.strip().split("\t")
+    aux_content = content[1].split(", ")
+
+    bike_id = aux_content[0][1:]
+    total_time = int(aux_content[1])
+    total_trips = int(aux_content[2][:-1])
+
+
+    # 3. We assign res
+    res = (bike_id, total_time, total_trips)
+
+    # 4. We return res
+    return res
+
 # ------------------------------------------
 # FUNCTION my_reduce
 # ------------------------------------------
 def my_reduce(my_input_stream, my_output_stream, my_reducer_input_parameters):
-    pass
+    time = {}
+    trips = {}
+    print(my_reducer_input_parameters)
+    for line in my_input_stream:
+        parameters = process_line(line)
+        if parameters[0] not in time:
+            time[parameters[0]] = parameters[1]
+            trips[parameters[0]] = parameters[2]
+        else:
+            time[parameters[0]] += parameters[1]
+            trips[parameters[0]] += parameters[2]
+
+    value_list = list(time.values())
+    New_List = value_list.copy()
+    # print(New_List)
+    Keys_list = list(time.keys())
+    New_List.sort(reverse=True)
+
+    for index,value in enumerate(New_List):
+        if index == my_reducer_input_parameters[0]:
+            break
+        else:
+            position = value_list.index(value)
+            Key = Keys_list[position]
+            trip_time = time[Key]
+            total_trips = trips[Key]
+            s = str(Key) + "\t(" + str(trip_time) + "," + str(total_trips) + ")\n"
+            my_output_stream.write(s)
+
 
 # ---------------------------------------------------------------
 #           PYTHON EXECUTION

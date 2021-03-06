@@ -76,7 +76,26 @@ def process_line(line):
 # FUNCTION my_map
 # ------------------------------------------
 def my_map(my_input_stream, my_output_stream, my_mapper_input_parameters):
-    pass
+    Array = []
+    for line in my_input_stream:
+        parameters = process_line(line)
+        if parameters[11] == my_mapper_input_parameters[0]:
+            Array.append(parameters)
+
+    if not Array:
+        pass
+    else:
+        s = "universal\t("
+
+        for index, line in enumerate(Array):
+            if index == len(Array)-1:
+                s += (str(line[0]) + " @ " + str(line[1]) + " @ " + str(line[4]) + " @ " + str(line[8]))
+            else:
+                s += (str(line[0]) + " @ " + str(line[1]) + " @ " + str(line[4]) + " @ " + str(line[8]) + " @ ")
+
+        s += ")\n"
+        my_output_stream.write(s)
+
 
 # ---------------------------------------------------------------
 #           PYTHON EXECUTION

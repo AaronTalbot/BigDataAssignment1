@@ -108,7 +108,7 @@ def my_main(input_folder, output_file, top_n_bikes):
     out_f = open(output_file, 'a')
 
     for index,value in enumerate(New_List):
-        if(index == 10):
+        if(index == top_n_bikes):
             break
         else:
 

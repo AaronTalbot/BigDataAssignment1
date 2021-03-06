@@ -23,11 +23,55 @@
 import sys
 import codecs
 
+def process_line(line):
+    # 1. We create the output variable
+    res = ()
+
+    # 1.1. We output the letter from the line
+    letter = None
+
+    # 1.2. We ouptut the num_words from the line
+    num_words = None
+
+    # 1.3. We ouptut the total_length_words from the line
+    total_length_words = None
+
+    # 2. We assign the variables
+    content = line.strip().split("\t")
+    aux_content = content[1].strip("()").split(" @ ")
+    new = []
+    for i in range(0,len(aux_content),4):
+        new.append(aux_content[i:i+4])
+    print(new)
+    # composite_list = [aux_content[x:x+4] for x in range(len(aux_content),4)]
+    # print(composite_list)
+    # print(len(aux_content))
+    # print(aux_content)
+    return new
+
 # ------------------------------------------
 # FUNCTION my_reduce
 # ------------------------------------------
 def my_reduce(my_input_stream, my_output_stream, my_reducer_input_parameters):
-    pass
+    previous_line = []
+    Array = []
+    for line in my_input_stream:
+        new_file = process_line(line)
+        for parameters in new_file:
+            if not previous_line:
+                previous_line = parameters
+            else:
+                if previous_line[3] == parameters[2]:
+                    previous_line = parameters
+                else:
+                    s = "By_Truck \t(" + str(previous_line[1]) + ", " + str(previous_line[3]) + \
+                        ", " + str(parameters[0]) + ", " + str(parameters[2]) + ")\n"
+                    Array.append(s)
+                    previous_line = parameters
+
+    for line in Array:
+        my_output_stream.write(line)
+
 
 # ---------------------------------------------------------------
 #           PYTHON EXECUTION
